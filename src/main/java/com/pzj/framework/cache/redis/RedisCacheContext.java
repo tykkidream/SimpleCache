@@ -1,20 +1,19 @@
 package com.pzj.framework.cache.redis;
 
-import com.pzj.framework.cache.core.CacheConnection;
+import com.pzj.framework.cache.core.Connection;
 import com.pzj.framework.cache.core.CacheContext;
 import com.pzj.framework.cache.core.CacheService;
 import com.pzj.framework.cache.redis.basic.HashCacheService;
 import com.pzj.framework.cache.redis.basic.ListCacheService;
 import com.pzj.framework.cache.redis.basic.QueueCacheService;
 import com.pzj.framework.cache.redis.basic.StringCacheService;
-import com.pzj.framework.cache.redis.RedisCacheService;
 
 /**
  * Created by Administrator on 2017-1-3.
  */
 public class RedisCacheContext implements CacheContext {
 
-    private CacheConnection connection = null;
+    private Connection connection = null;
 
     private CacheService cacheService = null;
     private final String cacheServiceLock = "cacheServiceLock";
@@ -31,11 +30,11 @@ public class RedisCacheContext implements CacheContext {
     private QueueCacheService queueCacheService = null;
     private final String queueCacheServiceLock = "queueCacheServiceLock";
 
-    public CacheConnection getConnection() {
+    public Connection getConnection() {
         return connection;
     }
 
-    public void setConnection(CacheConnection connection) {
+    public void setConnection(Connection connection) {
         this.connection = connection;
     }
 

@@ -1,7 +1,7 @@
 package com.pzj.framework.cache.redis.basic;
 
-import com.pzj.framework.cache.core.CacheConnection;
-import com.pzj.framework.cache.core.CacheStatement;
+import com.pzj.framework.cache.core.Connection;
+import com.pzj.framework.cache.core.Statement;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
@@ -10,12 +10,12 @@ import java.util.List;
  * Created by Administrator on 2016-12-30.
  */
 public class QueueCacheService extends AbstractCacheService{
-    public QueueCacheService(CacheConnection connection){
+    public QueueCacheService(Connection connection){
         super(connection);
     }
 
     public String popFromLeft(final String key) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.lpop(key);
@@ -24,7 +24,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public String popFromRight(final String key) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.rpop(key);
@@ -33,7 +33,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public List<String> blockPopFromLeft(final String ... keys){
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public List<String> evaluate(Jedis jedis) {
                 return jedis.blpop(keys);
@@ -42,7 +42,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public List<String> blockPopFromLeft(final int timeout, final String ... keys){
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public List<String> evaluate(Jedis jedis) {
                 return jedis.blpop(timeout, keys);
@@ -51,7 +51,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public List<String> blockPopFromRight(final String ... keys){
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public List<String> evaluate(Jedis jedis) {
                 return jedis.brpop(keys);
@@ -60,7 +60,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public List<String> blockPopFromRight(final int timeout, final String ... keys){
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public List<String> evaluate(Jedis jedis) {
                 return jedis.brpop(timeout, keys);
@@ -69,7 +69,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public void pushToLeft(final String key, final String ... values){
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.lpush(key, values);
@@ -78,7 +78,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public void pushToLeftx(final String key, final String ... values){
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.lpushx(key, values);
@@ -87,7 +87,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public void pushToRight(final String key, final String ... values){
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.rpush(key, values);
@@ -96,7 +96,7 @@ public class QueueCacheService extends AbstractCacheService{
     }
 
     public void pushToRightx(final String key, final String ... values){
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.rpushx(key, values);

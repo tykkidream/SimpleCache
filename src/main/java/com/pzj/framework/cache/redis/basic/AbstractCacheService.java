@@ -1,22 +1,22 @@
 package com.pzj.framework.cache.redis.basic;
 
-import com.pzj.framework.cache.core.CacheConnection;
+import com.pzj.framework.cache.core.Connection;
 
 /**
  * Created by Administrator on 2016-12-30.
  */
 abstract class AbstractCacheService {
-    protected CacheConnection connection;
+    protected Connection connection;
 
-    public AbstractCacheService(CacheConnection connection){
+    public AbstractCacheService(Connection connection){
         setConnection(connection);
     }
 
-    public CacheConnection getConnection() {
+    public Connection getConnection() {
         return connection;
     }
 
-    public void setConnection(CacheConnection connection) {
+    public void setConnection(Connection connection) {
         this.connection = connection;
     }
 }

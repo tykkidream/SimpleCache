@@ -1,7 +1,7 @@
 package com.pzj.framework.cache.redis.basic;
 
-import com.pzj.framework.cache.core.CacheConnection;
-import com.pzj.framework.cache.core.CacheStatement;
+import com.pzj.framework.cache.core.Connection;
+import com.pzj.framework.cache.core.Statement;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
@@ -10,12 +10,12 @@ import java.util.*;
  * Created by Administrator on 2016-12-28.
  */
 public class HashCacheService extends AbstractCacheService {
-    public HashCacheService(CacheConnection connection){
+    public HashCacheService(Connection connection){
         super(connection);
     }
 
     public Map<String, String> get(final String key) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public Map<String, String> evaluate(Jedis jedis) {
                 return jedis.hgetAll(key);
@@ -24,7 +24,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public String get(final String key, final String field) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.hget(key, field);
@@ -33,7 +33,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public Map<String, String> get(final String key, final String... fields) {
-        List<String> hmget =connection.execute(new CacheStatement() {
+        List<String> hmget =connection.execute(new Statement() {
             @Override
             public List<String> evaluate(Jedis jedis) {
                 return jedis.hmget(key, fields);
@@ -55,7 +55,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public void del(final String key, final String field) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.hdel(key, field);
@@ -65,7 +65,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public void del(final String key, final String... fields) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.hdel(key, fields);
@@ -74,7 +74,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public void set(final String key, final String field, final String value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.hset(key, field, value);
@@ -83,7 +83,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public void set(final String key, final Map<String, String> fieldValues) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.hmset(key, fieldValues);
@@ -92,7 +92,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public Set<String> keys(final String key) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public Set<String> evaluate(Jedis jedis) {
                 return jedis.hkeys(key);
@@ -101,7 +101,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public void incrNumber(final String key, final String field, final long value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.hincrBy(key, field, value);
@@ -110,7 +110,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public void incrNumber(final String key, final String field, final double value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Double evaluate(Jedis jedis) {
                 return jedis.hincrByFloat(key, field, value);
@@ -119,7 +119,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public void setnx(final String key, final String field, final String value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.hsetnx(key, field, value);
@@ -128,7 +128,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public boolean exist(final String key, final String field) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public Boolean evaluate(Jedis jedis) {
                 return jedis.hexists(key, field);
@@ -137,7 +137,7 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public long len(final String key) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.hlen(key);

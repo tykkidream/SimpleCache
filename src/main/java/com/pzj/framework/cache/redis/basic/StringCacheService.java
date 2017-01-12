@@ -1,7 +1,7 @@
 package com.pzj.framework.cache.redis.basic;
 
-import com.pzj.framework.cache.core.CacheConnection;
-import com.pzj.framework.cache.core.CacheStatement;
+import com.pzj.framework.cache.core.Connection;
+import com.pzj.framework.cache.core.Statement;
 import redis.clients.jedis.Jedis;
 
 import java.util.Iterator;
@@ -12,12 +12,12 @@ import java.util.Map;
  * Created by Administrator on 2016-12-28.
  */
 public class StringCacheService extends AbstractCacheService {
-    public StringCacheService(CacheConnection connection){
+    public StringCacheService(Connection connection){
         super(connection);
     }
 
     public String get(final String key) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.get(key);
@@ -26,7 +26,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public String get(final String key, final String newValue) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.getSet(key, newValue);
@@ -35,7 +35,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public String get(final String key, final int start, final int stop) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.getrange(key, start, stop);
@@ -44,7 +44,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public List<String> get(final String... keys) {
-        return connection.execute(new CacheStatement() {
+        return connection.execute(new Statement() {
             @Override
             public List<String> evaluate(Jedis jedis) {
                 return jedis.mget(keys);
@@ -53,7 +53,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void decrNumber(final String key) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.decr(key);
@@ -62,7 +62,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void incrNumber(final String key) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.incr(key);
@@ -71,7 +71,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void set(final String key, final String value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.set(key, value);
@@ -81,7 +81,7 @@ public class StringCacheService extends AbstractCacheService {
 
     public void set(final Map<String, String> keyValues) {
         final String[] values = convertArray(keyValues);
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.mset(values);
@@ -104,7 +104,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void setnx(final String key, final String value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.setnx(key, value);
@@ -113,7 +113,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void set(final String key, final String value, final int start) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.setrange(key, start, value);
@@ -122,7 +122,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void decrNumber(final String key, final long value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.decrBy(key, value);
@@ -131,7 +131,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void incrNumber(final String key, final long value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.incrBy(key, value);
@@ -140,7 +140,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void incrNumber(final String key, final double value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Double evaluate(Jedis jedis) {
                 return jedis.incrByFloat(key, value);
@@ -149,7 +149,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void append(final String key, final String value) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.append(key, value);
@@ -159,7 +159,7 @@ public class StringCacheService extends AbstractCacheService {
 
     public void setnx(final Map<String, String> keyValues) {
         final String[] values = convertArray(keyValues);
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public Long evaluate(Jedis jedis) {
                 return jedis.msetnx(values);
@@ -168,7 +168,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void setex(final String key, final String value, final int seconds) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.setex(key, seconds, value);
@@ -177,7 +177,7 @@ public class StringCacheService extends AbstractCacheService {
     }
 
     public void setexm(final String key, final String value, final int milliseconds) {
-        connection.execute(new CacheStatement() {
+        connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {
                 return jedis.psetex(key, milliseconds, value);
