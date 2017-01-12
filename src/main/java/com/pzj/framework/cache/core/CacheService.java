@@ -2,7 +2,6 @@ package com.pzj.framework.cache.core;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Administrator on 2016-12-28.
@@ -13,67 +12,67 @@ public interface CacheService {
      * @param key
      * @return
      */
-    String strGet(CacheKey key);
+    String strGet(String key);
 
     /**
      * 字符串缓存：获取多个字符串值
      * @param keys
      * @return
      */
-    List<String> strGet(CacheKey ... keys);
+    List<String> strGet(String ... keys);
 
     /**
      * 字符串缓存：递减1
      * @param key
      */
-    void strDecrNumber(CacheKey key);
+    void strDecrNumber(String key);
 
     /**
      * 字符串缓存：递减指定值
      * @param key
      * @param value
      */
-    void strDecrNumber(CacheKey key, long value);
+    void strDecrNumber(String key, long value);
 
     /**
      * 字符串缓存：递增1
      * @param key
      */
-    void strIncrNumber(CacheKey key);
+    void strIncrNumber(String key);
 
     /**
      * 字符串缓存：递增多个值
      * @param key
      * @param value
      */
-    void strIncrNumber(CacheKey key, long value);
+    void strIncrNumber(String key, long value);
 
     /**
      * 字符串缓存：设置一个值
      * @param key
      * @param value
      */
-    void strSet(CacheKey key, String value);
+    void strSet(String key, String value);
 
     /**
      * 字符串缓存：设置多个值
      * @param keyValues
      */
-    void strSet(Map<CacheKey,String> keyValues);
+    void strSet(Map<String,String> keyValues);
 
     /**
      * 字符串缓存：设置一个值，如果key存在，则取消设置
      * @param key
      * @param value
      */
-    void strSetnx(CacheKey key, String value);
+    void strSetnx(String key, String value);
 
     /**
      * 键值对缓存：获取所有键值对
      * @param key
      * @return
      */
-    Map<String,String> mapGet(CacheKey key);
+    Map<String,String> mapGet(String key);
 
     /**
      * 键值对缓存：获取一个键值
@@ -81,7 +80,7 @@ public interface CacheService {
      * @param field
      * @return
      */
-    String mapGet(CacheKey key, String field);
+    String mapGet(String key, String field);
 
     /**
      * 键值对缓存：获取多个键值对
@@ -89,21 +88,21 @@ public interface CacheService {
      * @param fields
      * @return
      */
-    Map<String,String> mapGet(CacheKey key, String ... fields);
+    Map<String,String> mapGet(String key, String ... fields);
 
     /**
      * 键值对缓存：删除一个键值对
      * @param key
      * @param field
      */
-    void mapDel(CacheKey key, String field);
+    void mapDel(String key, String field);
 
     /**
      * 键值对缓存：删除多个键值对
      * @param key
      * @param fields
      */
-    void mapDel(CacheKey key, String ... fields);
+    void mapDel(String key, String ... fields);
 
     /**
      * 键值对缓存：设置一个键值对
@@ -111,21 +110,14 @@ public interface CacheService {
      * @param field
      * @param value
      */
-    void mapSet(CacheKey key, String field, String value);
+    void mapSet(String key, String field, String value);
 
     /**
      * 键值对缓存：设置多个键值对
      * @param key
      * @param fieldValues
      */
-    void mapSet(CacheKey key, Map<String, String> fieldValues);
-
-    /**
-     * 键值对缓存：获取所有键
-     * @param key
-     * @return
-     */
-    Set<String> mapKeys(CacheKey key);
+    void mapSet(String key, Map<String, String> fieldValues);
 
     /**
      *  列表缓存：从列表中获得指定位置的元素
@@ -133,30 +125,21 @@ public interface CacheService {
      * @param index
      * @return
      */
-    String listGet(CacheKey key, int index);
-
-    /**
-     *  列表缓存：从列表中获得指定区间的元素
-     * @param key
-     * @param start
-     * @param stop
-     * @return
-     */
-    List<String> listGet(CacheKey key, int start, int stop);
+    String listGet(String key, int index);
 
     /**
      * 列表缓存：获得列表的长度
      * @param key
      * @return
      */
-    Long listSize(CacheKey key);
+    Long listSize(String key);
 
     /**
      * 列表缓存：从列表移除指定（所有的）元素
      * @param key
      * @param value
      */
-    void listRemove(CacheKey key, String value);
+    void listRemove(String key, String value);
 
     /**
      * 列表缓存：设置列表指定位置的元素
@@ -164,36 +147,29 @@ public interface CacheService {
      * @param index
      * @param value
      */
-    void listSet(CacheKey key, int index, String value);
+    void listSet(String key, int index, String value);
 
-    /**
-     * 列表缓存：裁剪列表，只保留指定区间的元素
-     * @param key
-     * @param start
-     * @param stop
-     */
-    void listTrim(CacheKey key, int start, int stop);
 
     /**
      * 从队列左边弹出一个元素
      * @param key
      * @return
      */
-    String queuePopFromLeft(CacheKey key);
+    String queuePopFromLeft(String key);
 
     /**
      * 从队列右边弹出一个元素
      * @param key
      * @return
      */
-    String queuePopFromRight(CacheKey key);
+    String queuePopFromRight(String key);
 
     /**
      * 从多个队列左边阻塞弹出一个元素
      * @param keys
      * @return
      */
-    List<String> queueBlockPopFromLeft(CacheKey ... keys);
+    List<String> queueBlockPopFromLeft(String ... keys);
 
     /**
      * 在 timeout 的时间内，从多个队列左边阻塞弹出一个元素
@@ -201,14 +177,14 @@ public interface CacheService {
      * @param keys
      * @return
      */
-    List<String> queueBlockPopFromLeft(int timeout, CacheKey ... keys);
+    List<String> queueBlockPopFromLeft(int timeout, String ... keys);
 
     /**
      * 从多个队列右边阻塞弹出一个元素
      * @param keys
      * @return
      */
-    List<String> queueBlockPopFromRight(CacheKey ... keys);
+    List<String> queueBlockPopFromRight(String ... keys);
 
     /**
      * 在 timeout 的时间内，从多个队列右边阻塞弹出一个元素
@@ -216,20 +192,20 @@ public interface CacheService {
      * @param keys
      * @return
      */
-    List<String> queueBlockPopFromRight(int timeout, CacheKey ... keys);
+    List<String> queueBlockPopFromRight(int timeout, String ... keys);
 
     /**
      * 向队列左边推入一个元素
      * @param key
      * @param values
      */
-    void queuePushToLeft(CacheKey key, String ... values);
+    void queuePushToLeft(String key, String ... values);
 
     /**
      * 向队列右边推入一个元素
      * @param key
      * @param values
      */
-    void queuePushToRight(CacheKey key, String ... values);
+    void queuePushToRight(String key, String ... values);
 
 }

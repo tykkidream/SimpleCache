@@ -4,21 +4,23 @@ package com.pzj.framework.cache.core;
  * Created by Administrator on 2017-1-13.
  */
 public interface CacheObjectService {
-    enum CacheObjectMode {
-        Single,
-        IncrMap,
-        FullMap
-    }
+    <T> T get(String key, Class<T> dataClass);
 
-    <T> T get(CacheKey key, Class<T> dataClass);
+    <T> T get(String key, Serializer serializer);
 
-    <T> T hget(CacheKey key, Class<T> dataClass, String... fields);
+    void set(String key, Object value);
 
-    <T> T get(CacheKey key, Serializer serializer);
+    void set(String key, Serializer serializer, Object value);
 
-    <T> T get(CacheKey key, Serializer serializer, String... fields);
+    <T> T hget(String key, Class<T> dataClass);
 
-    void set(CacheKey key, CacheObjectMode mode, Object value);
+    <T> T hget(String key, Class<T> dataClass, String... fields);
 
-    void set(CacheKey key, CacheObjectMode mode, Serializer serializer, Object value);
+    <T> T hget(String key, Serializer serializer);
+
+    <T> T hget(String key, Serializer serializer, String... fields);
+
+    void hset(String key, Object value);
+
+    void hset(String key, Serializer serializer, Object value);
 }

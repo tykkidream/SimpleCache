@@ -1,7 +1,7 @@
 package com.pzj.framework.cache.redis;
 
-import com.pzj.framework.cache.core.CacheKey;
 import com.pzj.framework.cache.core.CacheService;
+import com.pzj.framework.cache.core.KeyException;
 import com.pzj.framework.cache.redis.basic.HashCacheService;
 import com.pzj.framework.cache.redis.basic.ListCacheService;
 import com.pzj.framework.cache.redis.basic.QueueCacheService;
@@ -14,164 +14,195 @@ import java.util.*;
  * Created by Administrator on 2016-12-28.
  */
 public class RedisCacheService implements CacheService{
+    private static String KEY_RULE = "^[a-zA-Z0-9]*:[a-zA-Z0-9:]*$";
+
     private StringCacheService stringCacheService;
     private HashCacheService hashCacheService;
     private QueueCacheService queueCacheService;
     private ListCacheService listCacheService;
 
-    public String strGet(CacheKey key) {
-        return stringCacheService.get(key.key());
+    private void checkKey(String... keys){
+        if (keys == null){
+            throw new KeyException("缓存 keys 不能为空。");
+        }
+        for (int i = 0; i < keys.length; i++){
+            checkKey(keys[i]);
+        }
     }
 
-    public List<String> strGet(CacheKey... keys) {
-        return stringCacheService.get(convertToStringKey(keys));
+    private void checkKey(String key){
+        if (key == null){
+            throw new KeyException("缓存 key 不能为空。");
+        }
+        if (!key.matches(KEY_RULE)){
+            throw new KeyException("缓存 key 不能符合规则，应由多个部分组成，并以英文冒号分隔，且至少要有一个冒号。");
+        }
     }
 
-    public void strDecrNumber(CacheKey key) {
-        stringCacheService.decrNumber(key.key());
+    public String strGet(String key) {
+        checkKey(key);
+        return stringCacheService.get(key);
     }
 
-    public void strDecrNumber(CacheKey key, long value) {
-        stringCacheService.decrNumber(key.key(), value);
+    public List<String> strGet(String... keys) {
+        checkKey(keys);
+        return stringCacheService.get(keys);
     }
 
-    public void strIncrNumber(CacheKey key) {
-        stringCacheService.incrNumber(key.key());
+    public void strDecrNumber(String key) {
+        checkKey(key);
+        stringCacheService.decrNumber(key);
     }
 
-    public void strIncrNumber(CacheKey key, long value) {
-        stringCacheService.incrNumber(key.key(), value);
+    public void strDecrNumber(String key, long value) {
+        checkKey(key);
+        stringCacheService.decrNumber(key, value);
     }
 
-    public void strSet(CacheKey key, String value) {
-        stringCacheService.set(key.key(), value);
+    public void strIncrNumber(String key) {
+        checkKey(key);
+        stringCacheService.incrNumber(key);
     }
 
-    public void strSet(Map<CacheKey, String> keyValues) {
+    public void strIncrNumber(String key, long value) {
+        checkKey(key);
+        stringCacheService.incrNumber(key, value);
+    }
+
+    public void strSet(String key, String value) {
+        checkKey(key);
+        stringCacheService.set(key, value);
+    }
+
+    public void strSet(Map<String, String> keyValues) {
         stringCacheService.set(convertToStrintKey(keyValues));
     }
 
-    private HashMap<String, String> convertToStrintKey(Map<CacheKey, String> keyValues){
+    private HashMap<String, String> convertToStrintKey(Map<String, String> keyValues){
         if (keyValues == null)
             return null;
 
         HashMap<String, String> result = new HashMap<>(keyValues.size());
-        Iterator<Map.Entry<CacheKey, String>> iterator = keyValues.entrySet().iterator();
+        Iterator<Map.Entry<String, String>> iterator = keyValues.entrySet().iterator();
         while (iterator.hasNext()){
-            Map.Entry<CacheKey, String> next = iterator.next();
-            result.put(next.getKey().key(), next.getValue());
+            Map.Entry<String, String> next = iterator.next();
+            checkKey(next.getKey());
+            result.put(next.getKey(), next.getValue());
         }
         return result;
     }
 
-    public void strSetnx(CacheKey key, String value) {
-        stringCacheService.setnx(key.key(), value);
+    public void strSetnx(String key, String value) {
+        checkKey(key);
+        stringCacheService.setnx(key, value);
     }
 
-    public Map<String,String> mapGet(CacheKey key) {
-        return hashCacheService.get(key.key());
+    public Map<String,String> mapGet(String key) {
+        checkKey(key);
+        return hashCacheService.get(key);
     }
 
-    public String mapGet(CacheKey key, String field) {
-        return hashCacheService.get(key.key(), field);
+    public String mapGet(String key, String field) {
+        checkKey(key);
+        return hashCacheService.get(key, field);
     }
 
-    public Map<String,String> mapGet(CacheKey key, String... fields) {
-        return hashCacheService.get(key.key(), fields);
+    public Map<String,String> mapGet(String key, String... fields) {
+        checkKey(key);
+        return hashCacheService.get(key, fields);
     }
 
-    public void mapDel(CacheKey key, String field) {
-        hashCacheService.del(key.key(), field);
+    public void mapDel(String key, String field) {
+        checkKey(key);
+        hashCacheService.del(key, field);
     }
 
-    public void mapDel(CacheKey key, String... fields) {
-        hashCacheService.del(key.key(), fields);
+    public void mapDel(String key, String... fields) {
+        checkKey(key);
+        hashCacheService.del(key, fields);
     }
 
-    public void mapSet(CacheKey key, String field, String value) {
-        hashCacheService.set(key.key(), field, value);
+    public void mapSet(String key, String field, String value) {
+        checkKey(key);
+        hashCacheService.set(key, field, value);
     }
 
-    public void mapSet(CacheKey key, Map<String, String> fieldValues) {
-        hashCacheService.set(key.key(), fieldValues);
-    }
-
-    public Set<String> mapKeys(CacheKey key) {
-        return hashCacheService.keys(key.key());
-    }
-
-    @Override
-    public String listGet(CacheKey key, int index) {
-        return listCacheService.get(key.key(), index);
-    }
-
-    @Override
-    public List<String> listGet(CacheKey key, int start, int stop) {
-        return listCacheService.get(key.key(), start, stop);
+    public void mapSet(String key, Map<String, String> fieldValues) {
+        checkKey(key);
+        hashCacheService.set(key, fieldValues);
     }
 
     @Override
-    public Long listSize(CacheKey key) {
-        return listCacheService.size(key.key());
+    public String listGet(String key, int index) {
+        checkKey(key);
+        return listCacheService.get(key, index);
     }
 
     @Override
-    public void listRemove(CacheKey key, String value) {
-        listCacheService.remove(key.key(), value);
+    public Long listSize(String key) {
+        checkKey(key);
+        return listCacheService.size(key);
     }
 
     @Override
-    public void listSet(CacheKey key, int index, String value) {
-        listCacheService.set(key.key(), index, value);
+    public void listRemove(String key, String value) {
+        checkKey(key);
+        listCacheService.remove(key, value);
     }
 
     @Override
-    public void listTrim(CacheKey key, int start, int stop) {
-        listCacheService.trim(key.key(), start, stop);
+    public void listSet(String key, int index, String value) {
+        checkKey(key);
+        listCacheService.set(key, index, value);
     }
 
     @Override
-    public String queuePopFromLeft(CacheKey key) {
-        return queueCacheService.popFromLeft(key.key());
+    public String queuePopFromLeft(String key) {
+        checkKey(key);
+        return queueCacheService.popFromLeft(key);
     }
 
     @Override
-    public String queuePopFromRight(CacheKey key) {
-        return queueCacheService.popFromRight(key.key());
+    public String queuePopFromRight(String key) {
+        checkKey(key);
+        return queueCacheService.popFromRight(key);
     }
 
     @Override
-    public List<String> queueBlockPopFromLeft(CacheKey... keys) {
-        return queueCacheService.blockPopFromLeft(convertToStringKey(keys));
+    public List<String> queueBlockPopFromLeft(String... keys) {
+        checkKey(keys);
+        return queueCacheService.blockPopFromLeft(keys);
     }
 
-    private String[] convertToStringKey(CacheKey ... keys){
-        return CacheKey.keysArray(keys);
+
+    @Override
+    public List<String> queueBlockPopFromLeft(int timeout, String... keys) {
+        checkKey(keys);
+        return queueCacheService.blockPopFromLeft(timeout, keys);
     }
 
     @Override
-    public List<String> queueBlockPopFromLeft(int timeout, CacheKey... keys) {
-        return queueCacheService.blockPopFromLeft(timeout, convertToStringKey(keys));
+    public List<String> queueBlockPopFromRight(String ... keys) {
+        checkKey(keys);
+        return queueCacheService.blockPopFromRight(keys);
     }
 
     @Override
-    public List<String> queueBlockPopFromRight(CacheKey ... keys) {
-        return queueCacheService.blockPopFromRight(convertToStringKey(keys));
+    public List<String> queueBlockPopFromRight(int timeout, String... keys) {
+        checkKey(keys);
+        return queueCacheService.blockPopFromRight(timeout, keys);
     }
 
     @Override
-    public List<String> queueBlockPopFromRight(int timeout, CacheKey... keys) {
-        return queueCacheService.blockPopFromRight(timeout, convertToStringKey(keys));
+    public void queuePushToLeft(String key, String... values) {
+        checkKey(key);
+        queueCacheService.pushToLeft(key, values);
     }
 
     @Override
-    public void queuePushToLeft(CacheKey key, String... values) {
-        queueCacheService.pushToLeft(key.key(), values);
-    }
-
-    @Override
-    public void queuePushToRight(CacheKey key, String... values) {
-        queueCacheService.pushToRight(key.key(), values);
+    public void queuePushToRight(String key, String... values) {
+        checkKey(key);
+        queueCacheService.pushToRight(key, values);
     }
 
     public void setStringCacheService(StringCacheService stringCacheService) {
