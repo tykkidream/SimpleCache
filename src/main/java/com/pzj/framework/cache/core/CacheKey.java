@@ -4,7 +4,7 @@ package com.pzj.framework.cache.core;
  * Created by Administrator on 2017-1-9.
  */
 public class CacheKey {
-    private static String KEY_RULE = "^[a-zA-Z0-9]*:[a-zA-Z0-9:]*$";
+    private static String KEY_RULE = "^[a-z0-9]*:[a-z0-9:]*$";
 
     protected final static String Separator = ":";
     private String writer;
