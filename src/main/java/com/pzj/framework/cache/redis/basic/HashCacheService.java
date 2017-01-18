@@ -23,6 +23,15 @@ public class HashCacheService extends AbstractCacheService {
         });
     }
 
+    public Map<byte[], byte[]> get(final byte[] key) {
+        return connection.execute(new Statement() {
+            @Override
+            public Map<byte[], byte[]> evaluate(Jedis jedis) {
+                return jedis.hgetAll(key);
+            }
+        });
+    }
+
     public String get(final String key, final String field) {
         return connection.execute(new Statement() {
             @Override
@@ -46,6 +55,27 @@ public class HashCacheService extends AbstractCacheService {
 
         HashMap<String, String> map = new HashMap<>(hmget.size());
 
+
+        for (int i = 0; i < fields.length; i++){
+            map.put(fields[i], hmget.get(i));
+        }
+
+        return map;
+    }
+
+    public Map<byte[], byte[]> get(final byte[] key, final byte[] ... fields) {
+        List<byte[]> hmget =connection.execute(new Statement() {
+            @Override
+            public List<byte[]> evaluate(Jedis jedis) {
+                return jedis.hmget(key, fields);
+            }
+        });
+
+        if (hmget == null || hmget.isEmpty()) {
+            return null;
+        }
+
+        HashMap<byte[], byte[]> map = new HashMap<>(hmget.size());
 
         for (int i = 0; i < fields.length; i++){
             map.put(fields[i], hmget.get(i));
@@ -83,6 +113,15 @@ public class HashCacheService extends AbstractCacheService {
     }
 
     public void set(final String key, final Map<String, String> fieldValues) {
+        connection.execute(new Statement() {
+            @Override
+            public String evaluate(Jedis jedis) {
+                return jedis.hmset(key, fieldValues);
+            }
+        });
+    }
+
+    public void set(final byte[] key, final Map<byte[], byte[]> fieldValues) {
         connection.execute(new Statement() {
             @Override
             public String evaluate(Jedis jedis) {

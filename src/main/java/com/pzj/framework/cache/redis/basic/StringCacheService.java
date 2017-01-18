@@ -78,6 +78,14 @@ public class StringCacheService extends AbstractCacheService {
             }
         });
     }
+    public void set(final String key, final byte[] value) {
+        connection.execute(new Statement() {
+            @Override
+            public String evaluate(Jedis jedis) {
+                return jedis.set(key.getBytes(), value);
+            }
+        });
+    }
 
     public void set(final Map<String, String> keyValues) {
         final String[] values = convertArray(keyValues);

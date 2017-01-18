@@ -6,21 +6,21 @@ package com.pzj.framework.cache.core;
 public interface CacheObjectService {
     <T> T get(String key, Class<T> dataClass);
 
-    <T> T get(String key, Serializer serializer);
+    <T> T get(String key, Serializer<T> serializer);
 
-    void set(String key, Object value);
+    <T> void set(String key, T value);
 
-    void set(String key, Serializer serializer, Object value);
+    <T> void set(String key, Serializer<T> serializer, T value);
 
     <T> T hget(String key, Class<T> dataClass);
 
+    <T> T hget(String key, Serializer<T> serializer);
+
     <T> T hget(String key, Class<T> dataClass, String... fields);
 
-    <T> T hget(String key, Serializer serializer);
+    <T> T hget(String key, Serializer<T> serializer, String... fields);
 
-    <T> T hget(String key, Serializer serializer, String... fields);
+    <T> void hset(String key, T value);
 
-    void hset(String key, Object value);
-
-    void hset(String key, Serializer serializer, Object value);
+    <T> void hset(String key, Serializer<T> serializer, T value);
 }
