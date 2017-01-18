@@ -5,4 +5,5 @@ package com.pzj.framework.cache.core;
  */
 public interface CacheContext {
     CacheService getCacheService();
+    CacheObjectService getCacheObjectService();
 }

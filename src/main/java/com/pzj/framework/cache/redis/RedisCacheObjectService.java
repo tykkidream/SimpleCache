@@ -81,4 +81,12 @@ public class RedisCacheObjectService implements CacheObjectService {
         Map<byte[], byte[]> map = serializer.serializeMap(value);
         hashCacheService.set(key.getBytes(), map);
     }
+
+    public void setStringCacheService(StringCacheService stringCacheService) {
+        this.stringCacheService = stringCacheService;
+    }
+
+    public void setHashCacheService(HashCacheService hashCacheService) {
+        this.hashCacheService = hashCacheService;
+    }
 }
