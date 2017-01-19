@@ -73,6 +73,7 @@
 
 ### 配置缓存操作对象
 
+```xml
     <bean id="redisCacheContext" class="com.pzj.framework.cache.redis.RedisCacheContext">
         <property name="connection">
             <bean class="com.pzj.framework.cache.redis.RedisPoolConnection">
@@ -84,10 +85,11 @@
     <bean id="cacheService" factory-bean="redisCacheContext" factory-method="getCacheService" />
     
     <bean id="cacheObjectService" factory-bean="redisCacheContext" factory-method="getCacheObjectService" />
+```
 
 ### 基本类型操作
 
-```javascript
+```java
     @Resource
     private CacheService cacheService
     
@@ -99,33 +101,9 @@
     }
 ```
 
-
-```javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
-```
-
-
 ### 自定义类型操作
 
 ```java
-    @Resource
-    private CacheObjectService cacheObjectService
-    
-    @Test
-    public void test(){
-        SysUser user = new SysUser();
-        user.setId(123456789L);
-        user.setName("smith")
-    
-        String key = "user:123456789";  // key 至少要有一个冒号
-        
-        cacheObjectService.set(key, user);  // 默认序列化成JSON保存在String类型缓存中
-        
-        cacheObjectService.hset(key, user); // 默认序列化成JSON保存在Map类型缓存中
-    }
-```
-```ruby
     @Resource
     private CacheObjectService cacheObjectService
     
