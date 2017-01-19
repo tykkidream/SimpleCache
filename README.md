@@ -27,7 +27,7 @@
 
 ### 先配置Maven
 
-```java
+```xml
     <dependencies>
         <groupId>com.pzj.framework</groupId>
         <artifactId>pzj-cache</artifactId>
@@ -37,7 +37,7 @@
 
 ### 在Spring中配置redis连接
 
-```java
+```xml
     <!-- 连接池配置 -->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <!-- 连接池中最大连接数。高版本：maxTotal，低版本：maxActive -->
