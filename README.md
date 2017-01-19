@@ -27,14 +27,17 @@
 
 ### 先配置Maven
 
+```
     <dependencies>
         <groupId>com.pzj.framework</groupId>
         <artifactId>pzj-cache</artifactId>
         <version>1.1.0-SNAPSHOT</version>
     </dependencies>
+```
 
 ### 在Spring中配置redis连接
 
+```
     <!-- 连接池配置 -->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <!-- 连接池中最大连接数。高版本：maxTotal，低版本：maxActive -->
@@ -65,7 +68,9 @@
         <constructor-arg index="0" ref="jedisPoolConfig"/>
         <constructor-arg index="1" value="${redis.uri}" />
     </bean>
-    
+```
+
+
 ### 配置缓存操作对象
 
     <bean id="redisCacheContext" class="com.pzj.framework.cache.redis.RedisCacheContext">
