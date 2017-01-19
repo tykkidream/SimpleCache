@@ -87,6 +87,7 @@
 
 ### 基本类型操作
 
+```javascript
     @Resource
     private CacheService cacheService
     
@@ -96,7 +97,7 @@
         String value = "{'id' : '123456789', 'name' : 'smith'}";
         cacheService.strSet(key, value);
     }
-
+```
 
 ### 自定义类型操作
 
