@@ -30,7 +30,7 @@
     <dependencies>
         <groupId>com.pzj.framework</groupId>
         <artifactId>pzj-cache</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </dependencies>
 
 ### 在Spring中配置redis连接
