@@ -99,6 +99,13 @@
     }
 ```
 
+
+```javascript
+var s = "JavaScript syntax highlighting";
+alert(s);
+```
+
+
 ### 自定义类型操作
 
     @Resource
