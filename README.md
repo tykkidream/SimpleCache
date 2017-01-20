@@ -10,17 +10,25 @@
 
 以英文冒号分割多个单词（至少要有一个冒号）, 禁用大写字母。
 
+### CacheContext
 
+`CacheContext`对象是缓存工具的上下文，通过配置此对象，可以获取`CacheService`和`CacheObjectService`。
 
-接口
----
+### CacheConnection
+
+`CacheConnection`表示与缓存服务器的连接。目前有三个子类，`RedisDefaultConnection`用于简单的Redis连接，`RedisPoolConnection`表示通过线程池的方式连接Redis，`RedisPoolShardedConnection`表示具有分片作用的连接（还未实现）。
+
+### Serializer
+
+`Serializer`表示数据的序列化方式，默认是以字符串的格式，复杂对象是JSON的格式。需要自定时可实现此接口自定义序列化方式。
 
 ### CacheService
 
+`CacheService`包含了基本的缓存操作功能：获取、保存。可操作的数据类型包括：Value是单一的字符串类型；Value是List类型，且有队列操作功能；Value是Map类型。
 
 ### CacheObjectService
 
-
+`CacheObjectService`主要是存取自定义类型数据的。主要有两种形式，一种是保存在单一的字符串类型上，另一种是保存在Map上，每个属性名做为Map中的field，但属性值是单一的字符串类型保存。
 
 使用
 ---
