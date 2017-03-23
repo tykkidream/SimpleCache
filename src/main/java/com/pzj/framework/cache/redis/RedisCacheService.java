@@ -193,4 +193,8 @@ public class RedisCacheService implements CacheService {
 	public void keyExpireat(String key, long unixTime) {
 		keyCacheService.keyExpireat(key, unixTime);
 	}
+
+	public void setKeyCacheService(KeyCacheService keyCacheService) {
+		this.keyCacheService = keyCacheService;
+	}
 }
