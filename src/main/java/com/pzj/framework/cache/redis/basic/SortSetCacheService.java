@@ -6,6 +6,7 @@ import java.util.Set;
 import com.pzj.framework.cache.core.Connection;
 import com.pzj.framework.cache.core.Statement;
 
+import com.pzj.framework.cache.redis.AbstractService;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -14,7 +15,7 @@ import redis.clients.jedis.Jedis;
  * @author DongChunfu
  * @version $Id: SortSetCacheService.java, v 0.1 2017年2月16日 下午7:12:15 DongChunfu Exp $
  */
-public class SortSetCacheService extends AbstractCacheService {
+public class SortSetCacheService extends AbstractService {
 
 	public SortSetCacheService(final Connection connection) {
 		super(connection);

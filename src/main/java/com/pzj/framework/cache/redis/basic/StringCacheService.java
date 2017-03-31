@@ -2,6 +2,7 @@ package com.pzj.framework.cache.redis.basic;
 
 import com.pzj.framework.cache.core.Connection;
 import com.pzj.framework.cache.core.Statement;
+import com.pzj.framework.cache.redis.AbstractService;
 import redis.clients.jedis.Jedis;
 
 import java.util.Iterator;
@@ -11,7 +12,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016-12-28.
  */
-public class StringCacheService extends AbstractCacheService {
+public class StringCacheService extends AbstractService {
     public StringCacheService(Connection connection){
         super(connection);
     }
