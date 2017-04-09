@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
+import java.util.Date;
+
 /**
  * Created by Administrator on 2017-3-31.
  */
@@ -97,21 +99,14 @@ public class SimpleLockService extends AbstractService implements LockService{
         String lockPrince = lockEmperor + "-Prince";
         logger.warn("获取锁 {} 时，发现为死锁，开始抢死锁。", lockEmperor);
 
-        // 抢做太子。
-        Long seize = jedis.setnx(lockPrince, "ok");
-        if (seize < 0){
-            // 抢做太子失败。
-            String msg = String.format("抢死锁 $s 失败。", lockPrince);
-            throw new CacheException(msg);
+        Date currentDate = new Date();
+        RedisLock lock = RedisLock.createLock(lockPrince, currentDate, 66666L);
+
+        Boolean seizeLock = beginLock(jedis, lock, 0L);
+        if (seizeLock){
+            // 删除锁之僵尸
+            jedis.del(lockEmperor);
         }
-        Long survivalTime = jedis.ttl(lockEmperor);
-        if (survivalTime > 0){
-            // 本有最一开始的先机抢做太子，睡了一觉后以为抢太子成功了，但发现别人已经当上了皇帝。
-            String msg = String.format("抢死锁 $s 失败，其它程序早已抢到了。", lockEmperor);
-            throw new CacheException(msg);
-        }
-        // 删除锁之僵尸
-        jedis.del(lockEmperor);
         return lockPrince;
     }
 
