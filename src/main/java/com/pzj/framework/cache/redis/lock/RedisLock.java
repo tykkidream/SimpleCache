@@ -1,6 +1,7 @@
 package com.pzj.framework.cache.redis.lock;
 
 import com.pzj.framework.cache.core.Lock;
+import com.pzj.framework.cache.core.exception.CacheException;
 
 import java.util.Date;
 import java.util.UUID;
@@ -12,6 +13,10 @@ public class RedisLock implements Lock{
     private static String defaultOwner(){
         UUID uuid = UUID.randomUUID();
         return uuid.toString();
+    }
+
+    public static RedisLock createLock(Lock lock){
+        return createLock(lock.getLock(), lock.getOwner(), lock.getBeginDate(), lock.getEndDate());
     }
 
     public static RedisLock createLock(String lock, Date beginDate, Date endDate){
@@ -30,25 +35,40 @@ public class RedisLock implements Lock{
         return createLock(lock, owner, beginDate, new Date(beginDate.getTime() + timeout), timeout);
     }
 
-    public static RedisLock createLock(String lock, String owner, Date beginDate, Date endDate, Long timeout){
+    private static RedisLock createLock(String lock, String owner, Date beginDate, Date endDate, Long timeout){
+        if (lock == null){
+            throw new CacheException("创建 RedisLock 失败，lock 参数不能为空。");
+        }
+        if (owner == null){
+            throw new CacheException("创建 RedisLock 失败，owner 参数不能为空。");
+        }
+        if (beginDate == null){
+            throw new CacheException("创建 RedisLock 失败，beginDate 参数不能为空。");
+        }
+        if (endDate == null){
+            throw new CacheException("创建 RedisLock 失败，endDate 参数不能为空。");
+        }
+        if (timeout == null){
+            throw new CacheException("创建 RedisLock 失败，timeout 参数不能为空。");
+        }
+
+        RedisLockOpener lockOpener = new RedisLockOpener();
+        lockOpener.setOwner(owner);
+        lockOpener.setBeginDate(beginDate);
+        lockOpener.setEndDate(endDate);
+
         RedisLock redisLock = new RedisLock();
-        redisLock.setLock(lock);
-        redisLock.setBeginDate(beginDate);
-        redisLock.setEndDate(endDate);
-        redisLock.setTimeout(timeout);
-        redisLock.setOwner(owner);
+        redisLock.lock = lock;
+        redisLock.timeout =timeout;
+        redisLock.lockOpener = lockOpener;
         return redisLock;
     }
 
     private String lock;
 
-    private String owner;
-
-    private Date beginDate;
-
-    private Date endDate;
-
     private Long timeout;
+
+    private RedisLockOpener lockOpener;
 
     @Override
     public String getLock() {
@@ -56,41 +76,23 @@ public class RedisLock implements Lock{
     }
 
     @Override
-    public void setLock(String lock) {
-        this.lock = lock;
-    }
-
-    @Override
     public String getOwner() {
-        return owner;
-    }
-
-    @Override
-    public void setOwner(String owner) {
-        this.owner = owner;
+        return lockOpener.getOwner();
     }
 
     public Date getBeginDate() {
-        return beginDate;
-    }
-
-    public void setBeginDate(Date beginDate) {
-        this.beginDate = beginDate;
+        return lockOpener.getBeginDate();
     }
 
     public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+        return lockOpener.getEndDate();
     }
 
     public Long getTimeout() {
         return timeout;
     }
 
-    public void setTimeout(Long timeout) {
-        this.timeout = timeout;
+    public RedisLockOpener getLockOpener() {
+        return lockOpener;
     }
 }
