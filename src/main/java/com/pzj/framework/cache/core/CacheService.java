@@ -38,14 +38,14 @@ public interface CacheService {
 	 * 字符串缓存：递增1
 	 * @param key
 	 */
-	void strIncrNumber(String key);
+	Long strIncrNumber(String key);
 
 	/**
 	 * 字符串缓存：递增多个值
 	 * @param key
 	 * @param value
 	 */
-	void strIncrNumber(String key, long value);
+	Long strIncrNumber(String key, long value);
 
 	/**
 	 * 字符串缓存：设置一个值
