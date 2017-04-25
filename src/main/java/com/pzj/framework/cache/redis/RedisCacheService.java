@@ -43,14 +43,14 @@ public class RedisCacheService implements CacheService {
 		stringCacheService.decrNumber(key, value);
 	}
 
-	public void strIncrNumber(String key) {
+	public Long strIncrNumber(String key) {
 		CacheKey.checkKey(key);
-		stringCacheService.incrNumber(key);
+		return stringCacheService.incrNumber(key);
 	}
 
-	public void strIncrNumber(String key, long value) {
+	public Long strIncrNumber(String key, long value) {
 		CacheKey.checkKey(key);
-		stringCacheService.incrNumber(key, value);
+		return stringCacheService.incrNumber(key, value);
 	}
 
 	public void strSet(String key, String value) {

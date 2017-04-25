@@ -2,6 +2,7 @@ package com.pzj.framework.cache.redis.basic;
 
 import com.pzj.framework.cache.core.Connection;
 import com.pzj.framework.cache.core.Statement;
+import com.pzj.framework.cache.redis.AbstractService;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016-12-30.
  */
-public class QueueCacheService extends AbstractCacheService{
+public class QueueCacheService extends AbstractService {
     public QueueCacheService(Connection connection){
         super(connection);
     }
