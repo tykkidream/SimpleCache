@@ -50,12 +50,8 @@
 
     <bean id="cacheService" factory-bean="redisCacheContext" factory-method="getCacheService" />
 
-    <bean id="redisLockService" class="com.pzj.framework.cache.redis.lock.SimpleLockService">
-        <constructor-arg index="0">
-            <bean class="com.pzj.framework.cache.redis.RedisPoolConnection">
-                <property name="jedisPool" ref="jedisPool" />
-            </bean>
-        </constructor-arg>
-    </bean>
+    <bean id="cacheObjectService" factory-bean="redisCacheContext" factory-method="getCacheObjectService" />
+
+    <bean id="redisLockService" factory-bean="redisCacheContext" factory-method="getLockService" />
 
 </beans>

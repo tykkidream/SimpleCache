@@ -1,14 +1,12 @@
 package com.pzj.framework.cache.redis;
 
-import com.pzj.framework.cache.core.CacheContext;
-import com.pzj.framework.cache.core.CacheObjectService;
-import com.pzj.framework.cache.core.CacheService;
-import com.pzj.framework.cache.core.Connection;
+import com.pzj.framework.cache.core.*;
 import com.pzj.framework.cache.redis.basic.HashCacheService;
 import com.pzj.framework.cache.redis.basic.KeyCacheService;
 import com.pzj.framework.cache.redis.basic.ListCacheService;
 import com.pzj.framework.cache.redis.basic.QueueCacheService;
 import com.pzj.framework.cache.redis.basic.StringCacheService;
+import com.pzj.framework.cache.redis.lock.SimpleLockService;
 
 /**
  * Created by Administrator on 2017-1-3.
@@ -37,6 +35,9 @@ public class RedisCacheContext implements CacheContext {
 
 	private KeyCacheService keyCacheService = null;
 	private final String keyCacheServiceLock = "keyCacheServiceLock";
+
+	private LockService lockService = null;
+	private final String lockServiceLock = "lockServiceLock";
 
 	public Connection getConnection() {
 		return connection;
@@ -77,6 +78,18 @@ public class RedisCacheContext implements CacheContext {
 			}
 		}
 		return cacheObjectService;
+	}
+
+	@Override
+	public LockService getLockService() {
+		if (lockService == null) {
+			synchronized (lockServiceLock) {
+				if (lockService == null) {
+					lockService = new SimpleLockService(getConnection());
+				}
+			}
+		}
+		return lockService;
 	}
 
 	public StringCacheService getOrCreateStringCacheService() {

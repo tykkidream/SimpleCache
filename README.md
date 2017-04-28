@@ -30,6 +30,10 @@
 
 `CacheObjectService`主要是存取自定义类型数据的。主要有两种形式，一种是保存在单一的字符串类型上，另一种是保存在Map上，每个属性名做为Map中的field，但属性值是单一的字符串类型保存。
 
+### LockService
+
+`LockService`主要是在用于获取和释放分布式锁。
+
 使用
 ---
 
@@ -93,6 +97,8 @@
     <bean id="cacheService" factory-bean="redisCacheContext" factory-method="getCacheService" />
     
     <bean id="cacheObjectService" factory-bean="redisCacheContext" factory-method="getCacheObjectService" />
+    
+    <bean id="redisLockService" factory-bean="redisCacheContext" factory-method="getLockService" />
 ```
 
 ### 基本类型操作
