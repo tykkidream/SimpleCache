@@ -70,7 +70,7 @@ public class SortSetCacheService extends AbstractService {
 			@Override
 			public Set<String> evaluate(final Jedis jedis) {
 
-				final Set<String> members = jedis.zrange(key, start, end);
+				final Set<String> members = jedis.zrangeByScore(key, start, end);
 				if (null == members || members.size() == 0) {
 					return null;
 				}
