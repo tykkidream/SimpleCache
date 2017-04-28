@@ -50,12 +50,12 @@ public class SimpleLockService extends AbstractService implements LockService{
         // 锁之皇帝上位。
         Long seize = jedis.setnx(lockEmperor, lockValue(lock));
         if (seize != 1){
-            String msg = String.format("抢锁 $s 失败。", lockEmperor);
+            String msg = String.format("抢锁 %1$s 失败。", lockEmperor);
             throw new CacheException(msg);
         }
-        Long expire = jedis.expireAt(lockEmperor, lock.getEndDate().getTime());
+        Long expire = jedis.pexpireAt(lockEmperor, lock.getEndDate().getTime());
         if (expire < 0){
-            String msg = String.format("设置锁 $s 的超时时间时出现错误。", lockEmperor);
+            String msg = String.format("设置锁 %1$s 的超时时间时出现错误。", lockEmperor);
             throw new CacheException(msg);
         }
 
@@ -73,7 +73,7 @@ public class SimpleLockService extends AbstractService implements LockService{
                 // ttl 能说明锁是正常锁，还是死锁。
                 Long survivalTime = jedis.pttl(lockEmperor);
                 if (survivalTime > waitTime){
-                    String msg = String.format("获取锁失败，锁 $s 目前被其它程序占有。", lockEmperor);
+                    String msg = String.format("获取锁失败，锁 %1$s 目前被其它程序占有。", lockEmperor);
                     throw new CacheException(msg);
                 } else if (survivalTime > 0){
                     sleep(survivalTime);
