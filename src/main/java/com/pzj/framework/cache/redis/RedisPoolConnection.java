@@ -21,9 +21,16 @@ public class RedisPoolConnection implements Connection {
 
     @Override
     public <T> T execute(Statement statement) {
-        Jedis jedis = jedisPool.getResource();
-        T result = statement.evaluate(jedis);
-        jedis.close();
-        return result;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return statement.evaluate(jedis);
+        } catch (Throwable throwable){
+            throw throwable;
+        } finally {
+            if (jedis != null){
+                jedisPool.returnResource(jedis);
+            }
+        }
     }
 }
