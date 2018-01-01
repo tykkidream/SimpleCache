@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.tykkidream</groupId>
-	<artifactId>cache-core</artifactId>
+	<groupId>com.tykkidream.cache</groupId>
+	<artifactId>core</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<packaging>jar</packaging>
@@ -81,47 +81,7 @@
 			<version>4.3.0.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
-
-	<!-- 设置本地仓库 -->
-	<repositories>
-		<repository>
-			<id>nexus</id>
-			<name>Nexus</name>
-			<url>http://10.0.18.22:8081/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<distributionManagement>
-		<repository>
-			<id>Nexus.Releases</id>
-			<url>http://10.0.18.22:8081/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>Nexus.Snapshots</id>
-			<url>http://10.0.18.22:8081/nexus/content/repositories/snapshots/</url>
-			<uniqueVersion>true</uniqueVersion>
-		</snapshotRepository>
-	</distributionManagement>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>nexus</id>
-			<name>Nexus</name>
-			<url>http://10.0.18.22:8081/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<build>
 		<plugins>
